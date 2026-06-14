@@ -333,6 +333,10 @@ export function Control() {
         </Section>
 
         <Section title="Labels">
+          <Row label="Text size" hint="scales every on-display label">
+            <Slider value={cfg.labelScale} min={0.5} max={3} step={0.1} unit="×"
+              onChange={(v) => set({ labelScale: v })} />
+          </Row>
           <Row label="Density">
             <Segmented value={cfg.labelDensity}
               options={[

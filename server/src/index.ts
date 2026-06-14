@@ -193,7 +193,11 @@ async function main(): Promise<void> {
   }
 
   poller.start();
-  sfoGround.start();
+  // The SFO ground poller is hardcoded to San Francisco and only feeds the
+  // TV/stream "who's next" panel — useless elsewhere, and it adds a second
+  // airplanes.live request stream with no 429 backoff. Gated so deployments
+  // outside the Bay Area can switch it off (SFO_GROUND=0) to ease rate limits.
+  if ((process.env.SFO_GROUND ?? "1") !== "0") sfoGround.start();
 
   server.listen(PORT, HOST, () => {
     console.log(`[server] listening on http://${HOST}:${PORT}`);

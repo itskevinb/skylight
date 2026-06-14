@@ -278,6 +278,8 @@ export interface Config {
   // --- labels ---
   labelDensity: LabelDensity;
   nearestN: number;
+  /** Multiplier for every on-display text size (1 = upstream default). */
+  labelScale: number;
   showFields: ShowFields;
   /** Unit for the speed shown on labels (ADS-B is knots). */
   speedUnit: SpeedUnit;
@@ -369,6 +371,7 @@ export const DEFAULT_CONFIG: Config = {
 
   labelDensity: "all",
   nearestN: 5,
+  labelScale: 1.5,
   showFields: {
     airline: true,
     flight: true,

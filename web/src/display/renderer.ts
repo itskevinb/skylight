@@ -466,7 +466,7 @@ export class Renderer {
           ctx.stroke();
         }
         ctx.setLineDash([]);
-        ctx.font = `300 9px ${cfg.fonts.mono}`;
+        ctx.font = `300 ${9 * cfg.labelScale}px ${cfg.fonts.mono}`;
         ctx.fillStyle = rgba(hexToRgb(cfg.palette.text), 0.22 * cfg.brightness);
         ctx.textAlign = "left";
         ctx.textBaseline = "middle";
@@ -496,7 +496,7 @@ export class Renderer {
 
     if (cfg.compass) {
       ctx.save();
-      ctx.font = `300 12px ${cfg.fonts.label}`;
+      ctx.font = `300 ${12 * cfg.labelScale}px ${cfg.fonts.label}`;
       ctx.fillStyle = rgba(hexToRgb(cfg.palette.text), 0.32 * cfg.brightness);
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -569,7 +569,7 @@ export class Renderer {
         cx /= n;
         cy /= n;
         ctx.save();
-        ctx.font = `300 13px ${cfg.fonts.label}`;
+        ctx.font = `300 ${13 * cfg.labelScale}px ${cfg.fonts.label}`;
         ctx.fillStyle = rgba(rwyRgb, 0.5 * cfg.brightness);
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -774,7 +774,7 @@ export class Renderer {
     const ctx = this.ctx;
     this.withLabelRotation(cfg, p.x, p.y, () => {
       ctx.save();
-      ctx.font = `300 10px ${cfg.fonts.label}`;
+      ctx.font = `300 ${10 * cfg.labelScale}px ${cfg.fonts.label}`;
       ctx.fillStyle = color;
       ctx.globalAlpha = alpha;
       ctx.textAlign = "left";
@@ -932,10 +932,13 @@ export class Renderer {
     lines: { text: string; kind: "title" | "sub" }[],
   ): { w: number; lh: number; h: number } {
     const ctx = this.ctx;
-    const lh = 16;
+    const lh = 16 * cfg.labelScale;
     let w = 0;
     for (const ln of lines) {
-      ctx.font = ln.kind === "title" ? `500 14px ${cfg.fonts.label}` : `400 11px ${cfg.fonts.label}`;
+      ctx.font =
+        ln.kind === "title"
+          ? `500 ${14 * cfg.labelScale}px ${cfg.fonts.label}`
+          : `400 ${11 * cfg.labelScale}px ${cfg.fonts.label}`;
       try {
         ctx.letterSpacing = ln.kind === "title" ? "1.5px" : "0.5px";
       } catch {
@@ -1057,7 +1060,7 @@ export class Renderer {
       let y = box.y;
       for (const ln of lines) {
         if (ln.kind === "title") {
-          ctx.font = `500 14px ${cfg.fonts.label}`;
+          ctx.font = `500 ${14 * cfg.labelScale}px ${cfg.fonts.label}`;
           ctx.fillStyle = rgba([245, 247, 255], a);
           try {
             ctx.letterSpacing = "1.5px";
@@ -1065,7 +1068,7 @@ export class Renderer {
             /* noop */
           }
         } else {
-          ctx.font = `400 11px ${cfg.fonts.label}`;
+          ctx.font = `400 ${11 * cfg.labelScale}px ${cfg.fonts.label}`;
           ctx.fillStyle = rgba(hexToRgb(cfg.palette.text), 0.82 * a);
           try {
             ctx.letterSpacing = "0.5px";
@@ -1104,7 +1107,7 @@ export class Renderer {
     } catch {
       /* noop */
     }
-    ctx.font = `300 34px ${cfg.fonts.label}`;
+    ctx.font = `300 ${34 * cfg.labelScale}px ${cfg.fonts.label}`;
     ctx.fillStyle = rgba([245, 247, 255], v.alpha);
     ctx.fillText(ac.flight ?? ac.hex.toUpperCase(), x, y);
     try {
@@ -1112,7 +1115,7 @@ export class Renderer {
     } catch {
       /* noop */
     }
-    ctx.font = `400 15px ${cfg.fonts.label}`;
+    ctx.font = `400 ${15 * cfg.labelScale}px ${cfg.fonts.label}`;
     ctx.fillStyle = rgba(hexToRgb(cfg.palette.text), 0.85 * v.alpha);
     const dpAlt = ac.altBaro ?? ac.altGeom;
     const bits = [
@@ -1122,7 +1125,7 @@ export class Renderer {
       ac.gs != null ? formatSpeed(ac.gs, cfg.speedUnit) : null,
       ac.origin && ac.destination && routePlausible(ac, cfg) ? `${ac.origin} → ${ac.destination}` : null,
     ].filter(Boolean);
-    ctx.fillText(bits.join("    ·    "), x, y + 26);
+    ctx.fillText(bits.join("    ·    "), x, y + 26 * cfg.labelScale);
     try {
       ctx.letterSpacing = "0px";
     } catch {

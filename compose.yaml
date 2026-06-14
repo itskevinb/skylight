@@ -20,7 +20,15 @@ services:
       # DATA_SOURCE: radio
       # AIRCRAFT_JSON_URL: http://192.168.1.50:8080/data/aircraft.json
       # Add your own hostname/tunnel if you expose this beyond the LAN:
-      # ALLOWED_HOSTS: skylight.example.com
+      ALLOWED_HOSTS: planes.kevinbouffard.com
+      # API mode polls airplanes.live every POLL_MS. Their free/hobby limit is
+      # ~1 req/s, so keep this >=2000ms to avoid HTTP 429s. The display
+      # interpolates between polls, so 2.5s still looks smooth.
+      POLL_MS: "2500"
+      # The SFO ground poller is hardcoded to San Francisco and only feeds the
+      # TV/stream panels — off here so we don't run a second airplanes.live
+      # request stream (it has no 429 backoff). Set to 1 to re-enable.
+      SFO_GROUND: "0"
     volumes:
       # Persist config.json + route/TLE caches across restarts.
       - skylight-data:/app/server/data
